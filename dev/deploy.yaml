@@ -1,0 +1,136 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-backend
+  namespace: dhanya-jenkins
+  labels:
+    app: node-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-app
+  template:
+    metadata:
+      name: backend-Pod
+      labels:
+        app: node-app
+    spec:
+      containers:
+        - name: backend-container
+          image: image-registry.openshift-image-registry.svc:5000/dhanya-jenkins/node-gitserver:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          env:
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: password
+            - name: DB_URL
+              value: mongo-service.dhanya-jenkins.svc.cluster.local:27017/data
+            - name: NODE_ENV
+              value: production
+            - name: PORT
+              value: "5000"
+            - name: BASE_URL
+              value: http://node-route-dhanya-jenkins.edge-dev-410-915b3b336cabec458a7c7ec2aa7c625f-0000.us-south.containers.appdomain.cloud
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: node-service-backend
+  namespace: dhanya-jenkins
+spec:
+  type: ClusterIP
+  ports:
+    - name: backend
+      protocol: TCP
+      port: 5000
+      targetPort: 5000
+  selector:
+    app: node-app
+
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: node-route-back
+  namespace: dhanya-jenkins
+  labels:
+    app: node-app
+spec:
+  to:
+    kind: Service
+    name: node-service-backend
+    weight: 100
+  port:
+    targetPort: 5000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-frontend
+  namespace: dhanya-jenkins
+  labels:
+    app: node-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-app
+  template:
+    metadata:
+      name: frontend-Pod
+      labels:
+        app: node-app
+    spec:
+      containers:
+        - name: frontend-container
+          image: image-registry.openshift-image-registry.svc:5000/dhanya-jenkins/node-gitclient:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: REACT_APP_API_BASE_URL
+              value: http://node-route-back-dhanya-jenkins.edge-dev-410-915b3b336cabec458a7c7ec2aa7c625f-0000.us-south.containers.appdomain.cloud
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: node-service-frontend
+  namespace: dhanya-jenkins
+spec:
+  type: ClusterIP
+  ports:
+    - name: targetss
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+  selector:
+    app: node-app
+
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: node-route
+  namespace: dhanya-jenkins
+  labels:
+    app: node-app
+spec:
+  to:
+    kind: Service
+    name: node-service-frontend
+  port:
+    targetPort: 3000
