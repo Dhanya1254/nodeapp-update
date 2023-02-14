@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: backend-container
-          image: image-registry.openshift-image-registry.svc:5000/dhanya-jenkins/node-gitserver:latest
+          image: image-registry.openshift-image-registry.svc:5000/dhanya-jenkins/node-gitserver:0fb90
           imagePullPolicy: Always
           ports:
             - containerPort: 5000
@@ -96,7 +96,7 @@ spec:
     spec:
       containers:
         - name: frontend-container
-          image: image-registry.openshift-image-registry.svc:5000/dhanya-jenkins/node-gitclient:latest
+          image: image-registry.openshift-image-registry.svc:5000/dhanya-jenkins/node-gitclient:0fb90
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
