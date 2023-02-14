@@ -23,8 +23,8 @@ pipeline {
         sh 'git config user.name "${GITHUB_USERNAME}"'
         sh "cat ./dev/deploy.yaml"
         echo "${DOCKERTAG}"
-        sh "sed -i 's+image-registry.openshift-image-registry.svc:5000/dhanya-jenkins/node-server.*+image-registry.openshift-image-registry.svc:5000/dhanya-jenkins/node-server:${DOCKERTAG}+g' ./dev/deploy.yaml"
-        //sh "sed -i 's+image-registry.openshift-image-registry.svc:5000/dhanya-jenkins/node-gitclient.*+image-registry.openshift-image-registry.svc:5000/dhanya-jenkins/node-gitclient:${DOCKERTAG}+g' ./dev/deploy.yaml"       
+        sh "sed -i 's+image-registry.openshift-image-registry.svc:5000/dhanya-jenkins/node-gitserver.*+image-registry.openshift-image-registry.svc:5000/dhanya-jenkins/node-gitserver:${DOCKERTAG}+g' ./dev/deploy.yaml"
+        sh "sed -i 's+image-registry.openshift-image-registry.svc:5000/dhanya-jenkins/node-gitclient.*+image-registry.openshift-image-registry.svc:5000/dhanya-jenkins/node-gitclient:${DOCKERTAG}+g' ./dev/deploy.yaml"       
         sh "cat ./dev/deploy.yaml"
         sh "git add ."
         sh "git commit -m 'done by jenkins job node-app-update' "
