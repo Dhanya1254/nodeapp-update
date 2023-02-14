@@ -13,7 +13,7 @@ pipeline {
         
         stage("update git"){
         steps{
-            withCredentials([usernamePassword(credentialsId: 'github', passwordVariable: 'pass', usernameVariable: 'userr')]) {
+            withCredentials([usernamePassword(credentialsId: '44c409fd-bb35-4166-8c39-56c7178fe0e0', passwordVariable: 'pass', usernameVariable: 'user')]) {
                   script {
                         env.encodedPass=URLEncoder.encode(pass, "UTF-8")
                     }
@@ -28,7 +28,7 @@ pipeline {
         sh "cat ./dev/deploy.yaml"
         sh "git add ."
         sh "git commit -m 'done by jenkins job node-app-update' "
-        sh  'git push https://$userr:$encodedPass@github.com/$userr/nodeapp-update.git HEAD:branch'
+        sh  'git push https://$user:$encodedPass@github.com/$user/nodeapp-update.git HEAD:branch'
             }
         }
         }
