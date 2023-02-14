@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: backend-container
-          image: image-registry.openshift-image-registry.svc:5000/dhanya-jenkins/node-server:latest
+          image: image-registry.openshift-image-registry.svc:5000/dhanya-jenkins/node-gitserver:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 5000
@@ -75,7 +75,7 @@ spec:
   port:
     targetPort: 5000
 
-/*---
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -133,4 +133,4 @@ spec:
     kind: Service
     name: node-service-frontend
   port:
-    targetPort: 3000*/
+    targetPort: 3000
