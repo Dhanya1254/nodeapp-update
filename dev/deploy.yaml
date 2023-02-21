@@ -82,17 +82,17 @@ metadata:
   name: node-frontend
   namespace: dhanya-jenkins
   labels:
-    app: node-app
+    app: node-app-front
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: node-app
+      app: node-app-front
   template:
     metadata:
       name: frontend-Pod
       labels:
-        app: node-app
+        app: node-app-front
     spec:
       containers:
         - name: frontend-container
@@ -118,7 +118,7 @@ spec:
       port: 3000
       targetPort: 3000
   selector:
-    app: node-app
+    app: node-app-front
 
 ---
 kind: Route
