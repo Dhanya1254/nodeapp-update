@@ -127,7 +127,7 @@ metadata:
   name: node-route
   namespace: dhanya-jenkins
   labels:
-    app: node-app
+    app: node-app-front
 spec:
   to:
     kind: Service
